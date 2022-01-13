@@ -8,19 +8,22 @@ isLeaf    =[0, 0, 1, 1, 0, 0, 1, 1, 1]
             8  9
             
 """
-def constructBinaryTree(self, preorder: List[int], isLeaf: List[int]) -> Node:
-		# Write your code here...
-		
-		if not preorder: return None
-		index=0
-		def help(preorder,isLeaf,index):
-			root=Node(preorder[index]) #make a node at root index
-			#check if is internal node or leaf
-			#if is internal: continue constructing left and right for it
-			internal = (isLeaf[index] ==0)
-			index+=1
-			if internal:
-				root.left,index =help(preorder,isLeaf,index)
-				root.right,index =help(preorder,isLeaf,index)
-			return root,index
-		return help(preorder,isLeaf,index)[0]
+def construct(preorder, isLeaf, pIndex):
+ 
+    # base case
+    if pIndex == len(preorder):
+        return None, pIndex
+ 
+    # construct the current node, check if it is an internal node,
+    # and increment `pIndex`
+    node = Node(preorder[pIndex])
+    isInternalNode = (isLeaf[pIndex] == 0)
+    pIndex = pIndex + 1
+ 
+    # if the current node is an internal node, construct its 2 children
+    if isInternalNode:
+        node.left, pIndex = construct(preorder, isLeaf, pIndex)
+        node.right, pIndex = construct(preorder, isLeaf, pIndex)
+ 
+    # return current node
+    return node, pIndex

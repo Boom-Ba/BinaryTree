@@ -1,3 +1,6 @@
+#ret value is the sum of LST and RST
+#if found the sum is equal to root.val, ret root.val
+#else ret float('inf') means inaccessible 
 def checkChildrenSumProperty(self, root: Node) -> bool:
 	
 	def solve(root):

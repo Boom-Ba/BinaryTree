@@ -1,44 +1,37 @@
-#find a paired of nodes that is incorrectly placed in BST, and sawp them
-import sys
-class Solution:
-
-	'''
-	A binary tree node is defined as:
-
-	class Node:
-		def __init__(self, data=None, left=None, right=None):
-			self.data = data	# data field
-			self.left = left	# pointer to the left child
-			self.right = right	# pointer to the right child
-	'''
-	#use previous node to check the property of BST
-	def fixBinaryTree(self, root: Node) -> None:
-		if not root:
-			return None
-		def find_incorrect_nodes(root,x,y,prev=Node(-sys.maxsize) ):
-			
-			if not root:#empty tree
-				return x,y,prev #can't find incorrect nodes 
-		
-			#each time, previous node must be less than the root node
-			#because inorder visiting left, root, right, so the left.val has to be less than the root.val
-			x,y,prev =find_incorrect_nodes(root.left,x,y,prev)
-			
-			if root.data<prev.data: #root< left (prev)
-				if not x:
-					x=prev
-				y=root
-			#not found in the LST, call right 
-			prev=root
-			return find_incorrect_nodes(root.right,x,y,prev)
-			
-		def swapData(first, second):
- 
-		    data = first.data
-		    first.data = second.data
-		    second.data = data
-		x,y,prev=find_incorrect_nodes(root,None,None)
+def fixBinaryTree(self, root: Node) -> None:
 	
-		if x and y:
-			swapData(x,y)
+	"""
+	Inorder traverse the tree
+	Note: incorrect traverse expect an increasing order. so if node value placed as a reversed order, which means a pair of node has been placed incorrectly.
+		1. If prev traversed node has value that is greater than the current node, the prev is place incorrectly, need to be marked for swapping.
+		2. We might found two pairs of reversed order because the incorrectly nodes have been placed on the two sides of root.
+		3. If we only found one pair of incorrectly reversed nodes, means, the incorrect nodes have been placed on the one side of root, like
+		3. 5
+	      5.     3
 		
+	"""
+	
+	def correct(root,x, y, prev):
+		if root is None:
+			return x, y, prev
+		#Left First 
+		x,y,prev=correct(root.left,x,y,prev)
+		#check 
+		if root.data < prev.data:
+			if x is None:
+				x=prev 
+				
+			y=root
+		#if no found such case, keep checking the RST
+		prev=root
+		return correct(root.right,x,y,prev)
+
+	x = None
+	y=  None
+	prev= Node(-sys.maxsize)
+	x,y,prev= correct(root,x,y,prev)
+	if x and y:
+		x.data,y.data=y.data,x.data
+	
+			
+	

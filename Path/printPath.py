@@ -5,7 +5,6 @@ def helper(root,path,res):
   path.append(root.val)
   if not root.left and not root.right:
     res.append(path[:])
-
   helper(root.left,path,res)
   helper(root.right,path,res)
   path.pop()

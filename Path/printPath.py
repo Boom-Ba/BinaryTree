@@ -10,7 +10,6 @@ def helper(root,path,res):
   helper(root.right,path,res)
   path.pop()
 
-  
 def printPath(root):
   res=[]
   if not root:
